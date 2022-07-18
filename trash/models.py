@@ -28,6 +28,7 @@ class EWaste(models.Model):
                ('Piekarnik', 'Piekarnik'), ('Inne', 'Inne')]
     client = models.ForeignKey(
         'base.Client', on_delete=models.CASCADE, related_name="ewastes", blank=True, null=True)
+    user = models.ForeignKey(User, on_delete=models.PROTECT, related_name='ewastes', null=True)
     type = models.CharField('Wybierz rodzaj odpadów:', choices=EWASTES, max_length=20)
     height = models.PositiveSmallIntegerField('Wysokość:', max_length=5)
     width = models.PositiveSmallIntegerField('Szerokość:', max_length=5)
@@ -42,6 +43,7 @@ class RWaste(models.Model):
     RWASTES = [('Papier', 'Papier'), ('Plastik', 'Plastik'), ('Szkło', 'Szkło'), ('BIO', 'BIO')]
     client = models.ForeignKey(
         'base.Client', on_delete=models.CASCADE, related_name="rwastes", blank=True, null=True)
+    user = models.ForeignKey(User, on_delete=models.PROTECT, related_name='rwastes', null=True)
     type = models.CharField('Wybierz rodzaj odpadów:', choices=RWASTES, max_length=10)
     trash_amount = models.PositiveSmallIntegerField('Pojemność worków(l)', max_length=5)
 
@@ -53,7 +55,8 @@ class HWaste(models.Model):
     HWASTES = [('Farby', 'Farby'), ('Oleje', 'Oleje'), ('Leki', 'Leki'), ('Baterie', 'Baterie'), ('Żarówki', 'Żarówki'),
                ('Tonery', 'Tonery'), ('Inne', 'Inne')]
     client = models.ForeignKey(
-        'base.Client', on_delete=models.CASCADE, related_name="Hwastes", blank=True, null=True)
+        'base.Client', on_delete=models.CASCADE, related_name="hwastes", blank=True, null=True)
+    user = models.ForeignKey(User, on_delete=models.PROTECT, related_name='hwastes', null=True)
     type = models.CharField('Odpad', choices=HWASTES, max_length=10)
     trash_amount = models.PositiveSmallIntegerField('Ilość(l/kg/szt)', max_length=5)
 
@@ -66,6 +69,7 @@ class LSWaste(models.Model):
                 ('Komoda', 'Komoda'), ('Umywalka', 'Umywalka'), ('Łóżko', 'Łóżko'), ('Inne' , 'Inne')]
     client = models.ForeignKey(
         'base.Client', on_delete=models.CASCADE, related_name="lswastes", blank=True, null=True)
+    user = models.ForeignKey(User, on_delete=models.PROTECT, related_name='lswastes', null=True)
     type = models.CharField('Wybierz rodzaj odpadów:', choices=LSWASTES, max_length=10)
     height = models.PositiveSmallIntegerField('Wysokość:', max_length=5)
     width = models.PositiveSmallIntegerField('Szerokość:', max_length=5)

@@ -11,5 +11,7 @@ urlpatterns = [
     path("recyclers-form-view/", views.RecyclerFormView.as_view(), name = "recyclers-form-view"),
     path("orders-form-view/", views.OrderFormView.as_view(), name = "orders-form-view"),
     path("orders-user-view/", views.order_user, name = "orders-user-view"),
+    path("orders-list/", views.orders_list, name="orders-list"),
+    path("orders-detail-view/<pk>", views.OrderDetailView.as_view(), name="orders-detail-view"),
 
     ]

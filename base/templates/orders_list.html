@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
+
+    <p>Zamówienia:</p>
+    {% for o in orders %}
+<p><a href="{% url 'base:orders-detail-view' pk=o.pk %}">{{ o }}</a></p>
+
+
+    {% endfor %}
+
+{% endblock %}

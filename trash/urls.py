@@ -32,5 +32,9 @@ urlpatterns = [
     path("orders-rwaste/", views.order_rwaste, name = "orders-rwaste"),
     path("orders-hwaste/", views.order_hwaste, name = "orders-hwaste"),
     path("orders-lswaste/", views.order_lswaste, name="orders-lswaste"),
+    path("ewastes-list/", views.ewastes, name="ewastes-list"),
+    path("rwastes-list/", views.rwastes, name="rwastes-list"),
+    path("hwastes-list/", views.hwastes, name="hwastes-list"),
+    path("lswastes-list/", views.lswastes, name="lswastes-list"),
 
     ]

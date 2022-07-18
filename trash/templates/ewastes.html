@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block content %}
+
+    <p>Zamówienia:</p>
+    {% for e in ewastes %}
+<p><a href="{% url 'trash:ewastes-detail-view' pk=e.pk %}">{{ e }}</a></p>
+
+    {% endfor %}
+
+{% endblock %}

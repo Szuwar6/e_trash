@@ -107,11 +107,11 @@ def order_time_choice(value):
 
 class OrderForm(forms.ModelForm):
     client = forms.ModelChoiceField(widget=forms.HiddenInput(), required=False, queryset=None)
-    order_number = forms.ModelChoiceField(widget=forms.HiddenInput(), required=False, queryset=None)
+    # order_number = forms.ModelChoiceField(widget=forms.HiddenInput(), required=False, queryset=None)
 
     class Meta:
         model = Order
-        fields = ['order_day', 'order_time', 'strefa', 'adres', 'trash_type', 'client']
+        fields = ['id','order_number', 'order_day', 'order_time', 'strefa', 'adres', 'trash_type', 'client']
 
 
 # POPRZEDNIA WERSJA FORMULARZA Order

@@ -41,12 +41,12 @@ class Address(models.Model):
 
 
 class Availability(models.TextChoices):
-    MONDAY = 'PN', 'Poniedziałek',
-    TUESDAY = 'WT', 'Wtorek',
-    WEDNESDAY = 'ŚR', 'Środa',
-    THURSDAY = 'CZ', 'Czwartek',
-    FRIDAY = 'PT', 'Piątek',
-    SATURDAY = 'SB', 'Sobota'
+    MONDAY = 'Poniedziałek', 'Poniedziałek',
+    TUESDAY = 'Wtorek', 'Wtorek',
+    WEDNESDAY = 'Środa', 'Środa',
+    THURSDAY = 'Czwartek', 'Czwartek',
+    FRIDAY = 'Piątek', 'Piątek',
+    SATURDAY = 'Sobota', 'Sobota'
 day = models.CharField(max_length=15, choices=Availability.choices)
 
 
@@ -68,11 +68,11 @@ class Recycler(models.Model):
         return f"{self.name} "
 
 class TimeInterval(models.TextChoices):
-    INTERVAL_1 = '1', '8.00 - 10.00',
-    INTERVAL_2 = '2', '10.00 - 12.00',
-    INTERVAL_3 = '3', '12.00 - 14.00',
-    INTERVAL_4 = '4', '14.00 - 16.00',
-    INTERVAL_5 = '5', '16.00 - 18.00'
+    INTERVAL_1 = '8.00 - 10.00', '8.00 - 10.00',
+    INTERVAL_2 = '10.00 - 12.00', '10.00 - 12.00',
+    INTERVAL_3 = '12.00 - 14.00', '12.00 - 14.00',
+    INTERVAL_4 = '14.00 - 16.00', '14.00 - 16.00',
+    INTERVAL_5 = '16.00 - 18.00', '16.00 - 18.00'
 
 hour = models.CharField(choices=TimeInterval.choices, max_length=32)
 
@@ -82,6 +82,7 @@ class Order(models.Model):
     client = models.ForeignKey(
         Client, on_delete=models.CASCADE, related_name="orders", blank=True, null=True
     )
+    user = models.ForeignKey(User, on_delete=models.PROTECT, related_name='orders', null=True)
     recycler = models.ForeignKey(
         Recycler, on_delete=models.CASCADE, related_name="orders", blank=True, null=True
     )

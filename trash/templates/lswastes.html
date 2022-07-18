@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block content %}
+
+    <p>Zamówienia:</p>
+    {% for l in lswastes %}
+<p><a href="{% url 'trash:lswastes-detail-view' pk=l.pk %}">{{ l }}</a></p>
+
+    {% endfor %}
+
+{% endblock %}

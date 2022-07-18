@@ -141,6 +141,7 @@ def order_user(request):
         form = OrderForm(request.POST)
         if form.is_valid():
             form.instance.client = request.user.client
+            form.instance.user = request.user
             form.save()
             trash = form.cleaned_data["trash_type"]
             if trash == "Odpad Elektryczny":
@@ -162,3 +163,13 @@ def order_user(request):
 
 
 
+@login_required
+def orders_list(request):
+    return render(
+        request,
+        template_name="orders_list.html",
+        context={"orders": Order.objects.filter(user=request.user)})
+
+class OrderDetailView(LoginRequiredMixin, DetailView):
+    model = Order
+    template_name = "my_order_detail.html"

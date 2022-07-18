@@ -1,3 +1,4 @@
+from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect
@@ -6,6 +7,8 @@ from django.views.generic import CreateView, DetailView, UpdateView, DeleteView,
 
 from trash.forms import OrderEwasteForm, OrderRwasteForm, OrderHwasteForm, OrderLswasteForm
 from trash.models import Trash, EWaste, RWaste, HWaste, LSWaste
+
+User = get_user_model()
 
 
 class TrashListView(LoginRequiredMixin, ListView):
@@ -140,6 +143,7 @@ def order_ewaste(request):
         form = OrderEwasteForm(request.POST)
         if form.is_valid():
             form.instance.client = request.user.client
+            form.instance.user = request.user
             form.save()
             return redirect("/homepage/")
     else:
@@ -152,6 +156,7 @@ def order_rwaste(request):
         form = OrderRwasteForm(request.POST)
         if form.is_valid():
             form.instance.client = request.user.client
+            form.instance.user = request.user
             form.save()
             return redirect("/homepage/")
     else:
@@ -164,6 +169,7 @@ def order_hwaste(request):
         form = OrderHwasteForm(request.POST)
         if form.is_valid():
             form.instance.client = request.user.client
+            form.instance.user = request.user
             form.save()
             return redirect("/homepage/")
     else:
@@ -177,8 +183,38 @@ def order_lswaste(request):
         form = OrderLswasteForm(request.POST)
         if form.is_valid():
             form.instance.client = request.user.client
+            form.instance.user = request.user
             form.save()
             return redirect("/homepage/")
     else:
         form = OrderLswasteForm
     return render(request, 'form.html', {"form":form})
+
+
+@login_required
+def ewastes(request):
+    return render(
+        request,
+        template_name="ewastes.html",
+        context={"ewastes": EWaste.objects.filter(user=request.user)})
+
+@login_required
+def rwastes(request):
+    return render(
+        request,
+        template_name="rwastes.html",
+        context={"rwastes": RWaste.objects.filter(user=request.user)})
+
+@login_required
+def hwastes(request):
+    return render(
+        request,
+        template_name="hwastes.html",
+        context={"hwastes": HWaste.objects.filter(user=request.user)})
+
+@login_required
+def lswastes(request):
+    return render(
+        request,
+        template_name="lswastes.html",
+        context={"lswastes": LSWaste.objects.filter(user=request.user)})
