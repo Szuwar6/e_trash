@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+
+    <p>Nazwa: {{ recycler.name }}</p>
+    <p>Ulica: {{ recycler.street }}</p>
+    <p>Miasto: {{ recycler.city }}</p>
+    <p>Kod Pocztowy: {{ recycler.postal_code }}</p>
+    <p>NIP: {{ recycler.nip }}</p>
+    <p>Dostępne dni: {{ recycler.available_days }}</p>
+    <p>Obsługa klientów: {{ recycler.capacity }}</p>
+    <p>Rodzaj śmieci: {{ recycler.type }}</p>
+    <p>Strefa: {{ recycler.strefa }}</p>
+
+
+
+<p><a href="{% url 'base:recycler-update-view' %}">Edytuj Dane</a></p>
+
+
+{% endblock %}

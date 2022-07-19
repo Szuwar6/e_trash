@@ -48,6 +48,19 @@ class CurrentUserMixin(object):
 
         # return obj
 
+class CurrentAddressMixin(object):
+    model = Address
+
+    def get_object(self, *args, **kwargs):
+        return self.request.user.address
+
+class CurrentRecyclerMixin(object):
+    model = Recycler
+
+    def get_object(self, *args, **kwargs):
+        return self.request.user.recycler
+
+
 class ClientListView(LoginRequiredMixin,ListView):
     template_name = "clients_list_view.html"
     model = Client
@@ -57,12 +70,32 @@ class ClientDetailView(LoginRequiredMixin,CurrentUserMixin, DetailView):
     model = Client
     template_name = "clients_detail_view.html"
 
+class AddressDetailView(LoginRequiredMixin,CurrentAddressMixin, DetailView):
+    model = Address
+    template_name = "address_detail_view.html"
 
-class ClientUpdateView(LoginRequiredMixin,UpdateView):
+class RecyclerDetailView(LoginRequiredMixin,CurrentRecyclerMixin, DetailView):
+    model = Recycler
+    template_name = "recycler_detail_view.html"
+
+
+class ClientUpdateView(LoginRequiredMixin,CurrentUserMixin, UpdateView):
     model = Client
-    fields = "__all__"
+    fields = ['first_name' , 'last_name' , 'email' , 'phone' , 'strefa']
     template_name = "form.html"
-    success_url = reverse_lazy("homepage")
+    success_url = reverse_lazy("base:clients-detail-view")
+
+class AddressUpdateView(LoginRequiredMixin,CurrentAddressMixin, UpdateView):
+    model = Address
+    fields = ['street' , 'city' , 'postal_code']
+    template_name = "form.html"
+    success_url = reverse_lazy("base:clients-detail-view")
+
+class RecyclerUpdateView(LoginRequiredMixin,CurrentRecyclerMixin, UpdateView):
+    model = Recycler
+    fields = ['name', 'street', 'city' , 'postal_code' , 'nip' , 'available_days' , 'capacity' , 'type' , 'strefa']
+    template_name = "form.html"
+    success_url = reverse_lazy("base:recycler-detail-view")
 
 
 class ClientDeleteView(LoginRequiredMixin,DeleteView):
@@ -87,7 +120,7 @@ class RecyclerFormView(LoginRequiredMixin,FormView):
         available_days = form.cleaned_data["available_days"]
         capacity = form.cleaned_data["capacity"]
         type = form.cleaned_data["type"]
-        zone = form.cleaned_data["zone"]
+        strefa = form.cleaned_data["strefa"]
         Recycler.objects.create(
             user=self.request.user,
             name=name,
@@ -98,7 +131,7 @@ class RecyclerFormView(LoginRequiredMixin,FormView):
             available_days=available_days,
             capacity=capacity,
             type=type,
-            zone=zone
+            strefa=strefa
         )
         return result
 
@@ -141,6 +174,7 @@ def order_user(request):
         form = OrderForm(request.POST)
         if form.is_valid():
             form.instance.client = request.user.client
+            form.instance.address = request.user.address
             form.instance.user = request.user
             form.save()
             trash = form.cleaned_data["trash_type"]
@@ -169,6 +203,13 @@ def orders_list(request):
         request,
         template_name="orders_list.html",
         context={"orders": Order.objects.filter(user=request.user)})
+
+# @login_required
+# def orders_list(request):
+#     return render(
+#         request,
+#         template_name="orders_list.html",
+#         context={"orders": Order.objects.filter(recycler__name=request.user)})
 
 class OrderDetailView(LoginRequiredMixin, DetailView):
     model = Order

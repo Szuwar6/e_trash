@@ -1,4 +1,5 @@
 from django.db import models
+from multiselectfield import MultiSelectField
 
 from trash.models import Trash
 from django.contrib.auth.models import User
@@ -26,9 +27,10 @@ class Client(models.Model):
 
 
 class Address(models.Model):
-    user = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="addresses", blank=True, null=True
-    )
+    # user = models.ForeignKey(
+    #     User, on_delete=models.CASCADE, related_name="addresses", blank=True, null=True
+    # )
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
     street = models.CharField("Ulica", max_length=128)
     city = models.CharField("Miasto", max_length=128)
     postal_code = models.PositiveSmallIntegerField("Kod pocztowy", max_length=5)
@@ -52,16 +54,16 @@ day = models.CharField(max_length=15, choices=Availability.choices)
 
 class Recycler(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
-    CAPACITY_VALUES = [('1', '1'), ('2', '2'), ('3', '3'), ('4', '4'), ('5', '5')]
-    name = models.CharField(max_length=128)
-    street = models.CharField(max_length=128)
-    city = models.CharField(max_length=128)
-    postal_code = models.PositiveSmallIntegerField(max_length=5)
-    nip = models.IntegerField(max_length=10)
-    available_days = models.CharField(choices=Availability.choices, default='PN', max_length=15)
-    capacity = models.SmallIntegerField(choices=CAPACITY_VALUES, max_length=1, default='1')
-    type = models.CharField(choices=Trash.choices, max_length=32)
-    zone = models.ForeignKey(
+    CAPACITY_VALUES = [(1, 1), (2, 2), (3, 3), (4, 4), (5, 5)]
+    name = models.CharField("Nazwa" , max_length=128)
+    street = models.CharField("Ulica" , max_length=128)
+    city = models.CharField("Miasto",max_length=128)
+    postal_code = models.PositiveSmallIntegerField("Kod Pocztowy", max_length=5)
+    nip = models.IntegerField("NIP", max_length=10)
+    available_days = MultiSelectField("Dostępne dni", choices=Availability.choices, default='PN', max_length=128)
+    capacity = MultiSelectField("Pojemność", choices=CAPACITY_VALUES,max_choices=1, max_length=128, default=1)
+    type = MultiSelectField("Rodzaj śmieci" ,choices=Trash.choices, max_length=128)
+    strefa = models.ForeignKey(
         Zone, on_delete=models.CASCADE, related_name="recyclers", blank=True, null=True
     )
     def __str__(self):
@@ -78,7 +80,7 @@ hour = models.CharField(choices=TimeInterval.choices, max_length=32)
 
 
 class Order(models.Model):
-    id = models.AutoField(primary_key=True)
+    # id = models.AutoField(primary_key=True)
     client = models.ForeignKey(
         Client, on_delete=models.CASCADE, related_name="orders", blank=True, null=True
     )
@@ -86,20 +88,20 @@ class Order(models.Model):
     recycler = models.ForeignKey(
         Recycler, on_delete=models.CASCADE, related_name="orders", blank=True, null=True
     )
-    order_number = models.CharField("Numer zamówienia", auto_created=True, max_length=14)
+    # order_number = models.CharField("Numer zamówienia", auto_created=True, max_length=14)
     order_day = models.CharField("Wybierz dzień tygodnia", choices=Availability.choices, default='PN', max_length=15)
     order_time = models.CharField("Wybierz godzinę odbioru", choices=TimeInterval.choices, default=0, max_length=128)
     order_date = models.DateTimeField(auto_now_add=True)
     strefa = models.ForeignKey(
         Zone, on_delete=models.CASCADE, related_name="orders", blank=True, null=True
     )
-    adres = models.ForeignKey(
+    address = models.ForeignKey(
         Address, on_delete=models.CASCADE, related_name="orders", blank=True, null=True
     )
     trash_type = models.CharField("Wybierz typ odpadów", choices=Trash.choices, max_length=32)
 
     def __str__(self):
-        return f"{self.order_number}"
+        return f"{self.id}"
 
 
 class RecyclerAssignedOrders(models.Model):

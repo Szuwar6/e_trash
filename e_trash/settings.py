@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'trash',
     'accounts',
     'django_extensions',
+    'multiselectfield',
 ]
 
 MIDDLEWARE = [

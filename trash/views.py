@@ -145,7 +145,7 @@ def order_ewaste(request):
             form.instance.client = request.user.client
             form.instance.user = request.user
             form.save()
-            return redirect("/homepage/")
+            return redirect("/base/clients-detail-view/")
     else:
         form = OrderEwasteForm
     return render(request, 'form.html', {"form":form})
@@ -158,7 +158,7 @@ def order_rwaste(request):
             form.instance.client = request.user.client
             form.instance.user = request.user
             form.save()
-            return redirect("/homepage/")
+            return redirect("/base/clients-detail-view/")
     else:
         form = OrderRwasteForm
     return render(request, 'form.html', {"form":form})
@@ -171,7 +171,7 @@ def order_hwaste(request):
             form.instance.client = request.user.client
             form.instance.user = request.user
             form.save()
-            return redirect("/homepage/")
+            return redirect("/base/clients-detail-view/")
     else:
         form = OrderHwasteForm
     return render(request, 'form.html', {"form":form})
@@ -185,7 +185,7 @@ def order_lswaste(request):
             form.instance.client = request.user.client
             form.instance.user = request.user
             form.save()
-            return redirect("/homepage/")
+            return redirect("/base/clients-detail-view/")
     else:
         form = OrderLswasteForm
     return render(request, 'form.html', {"form":form})

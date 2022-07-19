@@ -1,13 +1,15 @@
 {% extends "base.html" %}
 {% block content %}
 
-    <p>Name: {{ client.first_name }}</p>
-    <p>Last name: {{ client.last_name }}</p>
+    <p>Imię: {{ client.first_name }}</p>
+    <p>Nazwisko: {{ client.last_name }}</p>
     <p>Email: {{ client.email }}</p>
     <p>Telefon: {{ client.phone }}</p>
     <p>Strefa: {{ client.strefa }}</p>
 
-
+<p><a href="{% url 'base:clients-update-view' %}">Edytuj dane</a></p>
+<p><a href="{% url 'base:address-detail-view' %}">Adres dostawy</a></p>
 <p><a href="{% url 'base:orders-user-view' %}">Złóż Zamówienie</a></p>
+<p><a href="{% url 'base:orders-list' %}">Lista Zamówień</a></p>
 
 {% endblock %}

@@ -3,9 +3,11 @@
 
     <p>Zamówienia:</p>
     {% for o in orders %}
-<p><a href="{% url 'base:orders-detail-view' pk=o.pk %}">{{ o }}</a></p>
+<p><a href="{% url 'base:orders-detail-view' pk=o.pk %}">Zamówienie nr: {{ o }}</a></p>
+
+
 
 
     {% endfor %}
-
+<p><a href="{% url 'base:clients-detail-view' %}">Powrót</a></p>
 {% endblock %}

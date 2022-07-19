@@ -1,13 +1,15 @@
 {% extends "base.html" %}
 {% block content %}
-    <p>Zamówienie: {{ order.id }}</p>
+    <p>Zamówienie nr: {{ order.id }}</p>
     <p>Firma: {{ order.recycler }}</p>
     <p>Numer Zamówienia: {{ order.order_number }}</p>
     <p>Dzień tygodnia: {{ order.order_day }}</p>
     <p>Godzina: {{ order.order_time }}</p>
     <p>Data: {{ order.order_date }}</p>
     <p>Strefa: {{ order.strefa }}</p>
-    <p>Adres: {{ order.adres }}</p>
+    <p>Adres: {{ order.address }}</p>
     <p>Śmieci: {{ order.trash_type }}</p>
+
+<p><a href="{% url 'base:orders-list' %}">Lista Zamówień</a></p>
 
 {% endblock %}

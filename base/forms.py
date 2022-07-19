@@ -47,19 +47,23 @@ class AddressForm(ModelForm):
 
 # FORMULARZE RECYCLER
 
-class RecyclerForm(Form):
+class RecyclerForm(forms.ModelForm):
     user = forms.ModelChoiceField(widget=forms.HiddenInput(), required=False, queryset=None)
-    name = CharField(max_length=128, label="Nazwa firmy:")
-    street = CharField(max_length=128, label="Adres firmy:")
-    city = CharField(max_length=128, label="Miasto:")
-    postal_code = CharField(max_length=128, label="Kod pocztowy:")
-    nip = CharField(max_length=10, validators=[RegexValidator(r'^\d{1,10}$')], label="Numer NIP:")
-    available_days = MultipleChoiceField(choices=Availability.choices,
-                                         label="Dostępne dni odbiorów w godz. 8.00 - 18.00:")
-    capacity = ChoiceField(choices=Recycler.CAPACITY_VALUES,
-                           label="Ilość klientów możliwa do obsłużenia w ciągu 2 godzin:")
-    type = MultipleChoiceField(choices=Trash.choices, label="Rodzaje odbieranych odpadów:")
-    zone = ModelChoiceField(queryset=Zone.objects.all(), label="Strefy odbioru odpadów:")
+
+    class Meta:
+        model = Recycler
+        fields = "__all__"
+    # name = CharField(max_length=128, label="Nazwa firmy:")
+    # street = CharField(max_length=128, label="Adres firmy:")
+    # city = CharField(max_length=128, label="Miasto:")
+    # postal_code = CharField(max_length=128, label="Kod pocztowy:")
+    # nip = CharField(max_length=10, validators=[RegexValidator(r'^\d{1,10}$')], label="Numer NIP:")
+    # available_days = MultipleChoiceField(choices=Availability.choices,
+    #                                      label="Dostępne dni odbiorów w godz. 8.00 - 18.00:")
+    # capacity = ChoiceField(choices=Recycler.CAPACITY_VALUES,
+    #                        label="Ilość klientów możliwa do obsłużenia w ciągu 2 godzin:")
+    # type = MultipleChoiceField(choices=Trash.choices, label="Rodzaje odbieranych odpadów:")
+    # zone = ModelChoiceField(queryset=Zone.objects.all(), label="Strefy odbioru odpadów:")
 
     # def clean(self):
     #     result = super().clean()
@@ -107,11 +111,11 @@ def order_time_choice(value):
 
 class OrderForm(forms.ModelForm):
     client = forms.ModelChoiceField(widget=forms.HiddenInput(), required=False, queryset=None)
-    # order_number = forms.ModelChoiceField(widget=forms.HiddenInput(), required=False, queryset=None)
+    address= forms.ModelChoiceField(widget=forms.HiddenInput(), required=False, queryset=None)
 
     class Meta:
         model = Order
-        fields = ['id','order_number', 'order_day', 'order_time', 'strefa', 'adres', 'trash_type', 'client']
+        fields = ['id','recycler',  'order_day', 'order_time', 'strefa', 'address', 'trash_type', 'client']
 
 
 # POPRZEDNIA WERSJA FORMULARZA Order
