@@ -2,8 +2,6 @@ from django.contrib.auth.models import User
 from django.db import models
 
 
-
-
 class Trash(models.TextChoices):
     ELECTRICAL = 'Odpad Elektryczny', 'Odpad Elektryczny',
     RECYCLED = 'Odpady z Recyklingu', 'Odpady z Recyklingu',
@@ -23,8 +21,10 @@ def __str__(self):
 
 
 class EWaste(models.Model):
-    EWASTES = [('Zmywarka', 'Zmywarka'), ('TV', 'TV'), ('Laptop', 'Laptop'), ('Pralka', 'Pralka'), ('Lodówka', 'Lodówka'),
-               ('Monitor', 'Monitor'), ('Mikrofalówka', 'Mikrofalówka'), ('Odkurzacz', 'Odkurzacz'), ('Kuchenka', 'Kuchenka'),
+    EWASTES = [('Zmywarka', 'Zmywarka'), ('TV', 'TV'), ('Laptop', 'Laptop'), ('Pralka', 'Pralka'),
+               ('Lodówka', 'Lodówka'),
+               ('Monitor', 'Monitor'), ('Mikrofalówka', 'Mikrofalówka'), ('Odkurzacz', 'Odkurzacz'),
+               ('Kuchenka', 'Kuchenka'),
                ('Piekarnik', 'Piekarnik'), ('Inne', 'Inne')]
     client = models.ForeignKey(
         'base.Client', on_delete=models.CASCADE, related_name="ewastes", blank=True, null=True)
@@ -66,7 +66,7 @@ class HWaste(models.Model):
 
 class LSWaste(models.Model):
     LSWASTES = [('Szafa', 'Szafa'), ('Fotel', 'Fotel'), ('Kanapa', 'Kanapa'), ('Stół', 'Stół'), ('Wanna', 'Wanna'),
-                ('Komoda', 'Komoda'), ('Umywalka', 'Umywalka'), ('Łóżko', 'Łóżko'), ('Inne' , 'Inne')]
+                ('Komoda', 'Komoda'), ('Umywalka', 'Umywalka'), ('Łóżko', 'Łóżko'), ('Inne', 'Inne')]
     client = models.ForeignKey(
         'base.Client', on_delete=models.CASCADE, related_name="lswastes", blank=True, null=True)
     user = models.ForeignKey(User, on_delete=models.PROTECT, related_name='lswastes', null=True)

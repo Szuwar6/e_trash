@@ -16,20 +16,17 @@ class Client(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
     first_name = models.CharField("Imię", max_length=128)
     last_name = models.CharField("Nazwisko", max_length=128)
-    email = models.CharField("Adres email", max_length=128) #walidacja
-    phone = models.IntegerField("Telefon", max_length=9) #walidacja przedrostek
+    email = models.CharField("Adres email", max_length=128)  # walidacja
+    phone = models.IntegerField("Telefon", max_length=9)  # walidacja przedrostek
     strefa = models.ForeignKey(
         Zone, on_delete=models.CASCADE, related_name="clients", blank=True, null=True
-     )
+    )
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
 
 
 class Address(models.Model):
-    # user = models.ForeignKey(
-    #     User, on_delete=models.CASCADE, related_name="addresses", blank=True, null=True
-    # )
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
     street = models.CharField("Ulica", max_length=128)
     city = models.CharField("Miasto", max_length=128)
@@ -49,25 +46,29 @@ class Availability(models.TextChoices):
     THURSDAY = 'Czwartek', 'Czwartek',
     FRIDAY = 'Piątek', 'Piątek',
     SATURDAY = 'Sobota', 'Sobota'
+
+
 day = models.CharField(max_length=15, choices=Availability.choices)
 
 
 class Recycler(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
     CAPACITY_VALUES = [(1, 1), (2, 2), (3, 3), (4, 4), (5, 5)]
-    name = models.CharField("Nazwa" , max_length=128)
-    street = models.CharField("Ulica" , max_length=128)
-    city = models.CharField("Miasto",max_length=128)
+    name = models.CharField("Nazwa", max_length=128)
+    street = models.CharField("Ulica", max_length=128)
+    city = models.CharField("Miasto", max_length=128)
     postal_code = models.PositiveSmallIntegerField("Kod Pocztowy", max_length=5)
     nip = models.IntegerField("NIP", max_length=10)
     available_days = MultiSelectField("Dostępne dni", choices=Availability.choices, default='PN', max_length=128)
-    capacity = MultiSelectField("Pojemność", choices=CAPACITY_VALUES,max_choices=1, max_length=128, default=1)
-    type = MultiSelectField("Rodzaj śmieci" ,choices=Trash.choices, max_length=128)
+    capacity = MultiSelectField("Pojemność", choices=CAPACITY_VALUES, max_choices=1, max_length=128, default=1)
+    type = MultiSelectField("Rodzaj śmieci", choices=Trash.choices, max_length=128)
     strefa = models.ForeignKey(
         Zone, on_delete=models.CASCADE, related_name="recyclers", blank=True, null=True
     )
+
     def __str__(self):
         return f"{self.name} "
+
 
 class TimeInterval(models.TextChoices):
     INTERVAL_1 = '8.00 - 10.00', '8.00 - 10.00',
@@ -76,11 +77,11 @@ class TimeInterval(models.TextChoices):
     INTERVAL_4 = '14.00 - 16.00', '14.00 - 16.00',
     INTERVAL_5 = '16.00 - 18.00', '16.00 - 18.00'
 
+
 hour = models.CharField(choices=TimeInterval.choices, max_length=32)
 
 
 class Order(models.Model):
-    # id = models.AutoField(primary_key=True)
     client = models.ForeignKey(
         Client, on_delete=models.CASCADE, related_name="orders", blank=True, null=True
     )
@@ -88,7 +89,6 @@ class Order(models.Model):
     recycler = models.ForeignKey(
         Recycler, on_delete=models.CASCADE, related_name="orders", blank=True, null=True
     )
-    # order_number = models.CharField("Numer zamówienia", auto_created=True, max_length=14)
     order_day = models.CharField("Wybierz dzień tygodnia", choices=Availability.choices, default='PN', max_length=15)
     order_time = models.CharField("Wybierz godzinę odbioru", choices=TimeInterval.choices, default=0, max_length=128)
     order_date = models.DateTimeField(auto_now_add=True)
@@ -111,4 +111,3 @@ class RecyclerAssignedOrders(models.Model):
     order_time = models.ManyToManyField(
         Order, related_name="assigned_orders", blank=True, null=True
     )
-

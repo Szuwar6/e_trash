@@ -1,11 +1,3 @@
-# jeżeli użytkownik wybiera datę i godzinę to filtrowana jest lista recyclerów, którzy są dostępni w danym terminie
-#
-# Dostępni w danym terminie to znaczy, że w danym przedziale czasowym ilość zamówień przypisanych do recyclera nie przekracza capacity
-#
-# recycler agregate count orders po tym będziemy filtrować -> count orders w danej godzinie
-#
-# Potem z tej listy recyclerów możemy zrobić random albo first i przekażemy go do order objects create
-
 from datetime import datetime
 
 from django import forms
@@ -27,8 +19,6 @@ def capitalized_validator(value):
         raise ValidationError('Value must be capitalized.')
 
 
-# FORMULARZE CLIENT
-
 class ClientForm(ModelForm):
     user = forms.ModelChoiceField(widget=forms.HiddenInput(), required=False, queryset=None)
 
@@ -40,13 +30,10 @@ class ClientForm(ModelForm):
 class AddressForm(ModelForm):
     user = forms.ModelChoiceField(widget=forms.HiddenInput(), required=False, queryset=None)
 
-
     class Meta:
         model = Address
         fields = "__all__"
 
-
-# FORMULARZE RECYCLER
 
 class RecyclerForm(forms.ModelForm):
     user = forms.ModelChoiceField(widget=forms.HiddenInput(), required=False, queryset=None)
@@ -54,31 +41,7 @@ class RecyclerForm(forms.ModelForm):
     class Meta:
         model = Recycler
         fields = "__all__"
-    # name = CharField(max_length=128, label="Nazwa firmy:")
-    # street = CharField(max_length=128, label="Adres firmy:")
-    # city = CharField(max_length=128, label="Miasto:")
-    # postal_code = CharField(max_length=128, label="Kod pocztowy:")
-    # nip = CharField(max_length=10, validators=[RegexValidator(r'^\d{1,10}$')], label="Numer NIP:")
-    # available_days = MultipleChoiceField(choices=Availability.choices,
-    #                                      label="Dostępne dni odbiorów w godz. 8.00 - 18.00:")
-    # capacity = ChoiceField(choices=Recycler.CAPACITY_VALUES,
-    #                        label="Ilość klientów możliwa do obsłużenia w ciągu 2 godzin:")
-    # type = MultipleChoiceField(choices=Trash.choices, label="Rodzaje odbieranych odpadów:")
-    # zone = ModelChoiceField(queryset=Zone.objects.all(), label="Strefy odbioru odpadów:")
 
-    # def clean(self):
-    #     result = super().clean()
-    #     if not self.errors:
-    #         if result['name'][0].islower:
-    #             raise ValidationError(
-    #                 "Nazwa firmy musi zaczynać się z dużej litery."
-    #             )
-    #     return result
-
-
-
-
-# FORMULARZE ORDER
 
 # def order_numeration_validator(value):
 #     value = Order.order_number
@@ -134,27 +97,21 @@ class RecyclerForm(forms.ModelForm):
 #             )
 
 
-
-
 class OrderForm(forms.ModelForm):
     client = forms.ModelChoiceField(widget=forms.HiddenInput(), required=False, queryset=None)
-    address= forms.ModelChoiceField(widget=forms.HiddenInput(), required=False, queryset=None)
-
+    address = forms.ModelChoiceField(widget=forms.HiddenInput(), required=False, queryset=None)
 
     class Meta:
         model = Order
-        fields = ['id','recycler',  'order_day', 'order_time', 'strefa', 'address', 'trash_type', 'client']
-
+        fields = ['id', 'recycler', 'order_day', 'order_time', 'strefa', 'address', 'trash_type', 'client']
 
 # POPRZEDNIA WERSJA FORMULARZA Order
-#Zostawiona na wszelki wypadek
+# Zostawiona na wszelki wypadek
 
 # class OrderNumberField(CharField):
 #     def order_numeration(self, value):
 #         value = f'ORD{Order.id}/2022'
 #         return value
-
-
 
 
 # class OrderForm(Form):
