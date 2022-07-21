@@ -40,6 +40,7 @@ class ClientForm(ModelForm):
 class AddressForm(ModelForm):
     user = forms.ModelChoiceField(widget=forms.HiddenInput(), required=False, queryset=None)
 
+
     class Meta:
         model = Address
         fields = "__all__"
@@ -85,33 +86,60 @@ class RecyclerForm(forms.ModelForm):
 #     return value
 
 
-def order_day_choice(value):
-    value = Order.order_day
-    available_recyclers = Recycler.objects.filter(available_days=value)
-    if value in available_recyclers:
-        Order.objects.create()
-    else:
-        raise ValidationError(
-            "Brak dostępnych odbiorców w wybranym terminie, prosimy o wybranie innego dnia"
-        )
+# def order_day_choice(value):
+#     value = Order.order_day
+#     available_recyclers = Recycler.objects.filter(available_days=value)
+#     if value in available_recyclers:
+#         Order.objects.create()
+#     else:
+#         raise ValidationError(
+#             "Brak dostępnych odbiorców w wybranym terminie, prosimy o wybranie innego dnia"
+#         )
+#
+#
+# def order_time_choice(value):
+#     value = Order.order_time
+#     assigned_orders = RecyclerAssignedOrders.objects.aggregate(Count('order_time'))
+#     capacity = Recycler.objects.filter('capacity')
+#     if value:
+#         if assigned_orders <= capacity:
+#             Order.objects.create()
+#         else:
+#             raise ValidationError(
+#                 "Brak dostępnych odbiorców w wybranych godzinach, prosimy o wybranie innego terminu"
+#             )
+#
+#
+#
+# class OrderDateField(ChoiceField):
+#     def order_day_choice(self, value):
+#         available_recyclers = Recycler.objects.filter(available_days=value)
+#         if value in available_recyclers:
+#             Order.objects.create()
+#         else:
+#             raise ValidationError(
+#                 "Brak dostępnych odbiorców w wybranym terminie, prosimy o wybranie innego dnia"
+#             )
+#
+#
+# class OrderTimeField(ChoiceField):
+#     def order_time_choice(self, capacity):
+#         assigned_orders = RecyclerAssignedOrders.objects.aggregate(Count('order_time'))
+#         capacity = Recycler.objects.filter('capacity')
+#         if assigned_orders <= capacity:
+#             Order.objects.create()
+#         else:
+#             raise ValidationError(
+#                 "Brak dostępnych odbiorców w wybranych godzinach, prosimy o wybranie innego terminu"
+#             )
 
 
-def order_time_choice(value):
-    value = Order.order_time
-    assigned_orders = RecyclerAssignedOrders.objects.aggregate(Count('order_time'))
-    capacity = Recycler.objects.filter('capacity')
-    if value:
-        if assigned_orders <= capacity:
-            Order.objects.create()
-        else:
-            raise ValidationError(
-                "Brak dostępnych odbiorców w wybranych godzinach, prosimy o wybranie innego terminu"
-            )
 
 
 class OrderForm(forms.ModelForm):
     client = forms.ModelChoiceField(widget=forms.HiddenInput(), required=False, queryset=None)
     address= forms.ModelChoiceField(widget=forms.HiddenInput(), required=False, queryset=None)
+
 
     class Meta:
         model = Order
@@ -127,27 +155,6 @@ class OrderForm(forms.ModelForm):
 #         return value
 
 
-# class OrderDateField(ChoiceField):
-#     def order_day_choice(self, value):
-#         available_recyclers = Recycler.objects.filter(available_days=value)
-#         if value in available_recyclers:
-#             Order.objects.create()
-#         else:
-#             raise ValidationError(
-#                 "Brak dostępnych odbiorców w wybranym terminie, prosimy o wybranie innego dnia"
-#             )
-
-
-# class OrderTimeField(ChoiceField):
-#     def order_time_choice(self, capacity):
-#         assigned_orders = RecyclerAssignedOrders.objects.aggregate(Count('order_time'))
-#         capacity = Recycler.objects.filter('capacity')
-#         if assigned_orders <= capacity:
-#             Order.objects.create()
-#         else:
-#             raise ValidationError(
-#                 "Brak dostępnych odbiorców w wybranych godzinach, prosimy o wybranie innego terminu"
-#             )
 
 
 # class OrderForm(Form):

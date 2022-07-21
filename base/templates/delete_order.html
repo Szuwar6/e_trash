@@ -1,7 +1,13 @@
 {% extends "base.html" %}
 {% block content %}
+
+<form method="post">
+    {% csrf_token %}
+    <h3>Czy chcesz anulować zamówienie?</h3>
+    <p></p>
     <p>Zamówienie nr: {{ order.id }}</p>
     <p>Firma: {{ order.recycler }}</p>
+    <p>Numer Zamówienia: {{ order.order_number }}</p>
     <p>Dzień tygodnia: {{ order.order_day }}</p>
     <p>Godzina: {{ order.order_time }}</p>
     <p>Data zamówienia: {{ order.order_date }}</p>
@@ -9,9 +15,7 @@
     <p>Adres: {{ order.address }}</p>
     <p>Śmieci: {{ order.trash_type }}</p>
 
-<p><a href="{% url 'base:orders-list' %}">Lista Zamówień</a></p>
-
-<p><a href="{% url 'base:orders-delete-view' pk=order.pk %}">Anuluj zamówienie</a></p>
-
-
+    <p><input type="submit" value="TAK"> </p>
+    <p><a href="{% url 'base:orders-list' %}">Powrót do listy</a></p>
+</form>
 {% endblock %}

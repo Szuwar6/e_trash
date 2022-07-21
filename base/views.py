@@ -108,7 +108,7 @@ class ClientDeleteView(LoginRequiredMixin,DeleteView):
 class RecyclerFormView(LoginRequiredMixin,FormView):
     template_name = "form.html"
     form_class = RecyclerForm
-    success_url = reverse_lazy("homepage")
+    success_url = reverse_lazy("base:recycler-detail-view")
 
     def form_valid(self, form):
         result = super().form_valid(form)
@@ -204,13 +204,23 @@ def orders_list(request):
         template_name="orders_list.html",
         context={"orders": Order.objects.filter(user=request.user)})
 
-# @login_required
-# def orders_list(request):
-#     return render(
-#         request,
-#         template_name="orders_list.html",
-#         context={"orders": Order.objects.filter(recycler__name=request.user)})
+@login_required
+def orders_recycler_list(request):
+    return render(
+        request,
+
+        template_name="orders_recycler_list.html",
+        context={"orders": Order.objects.filter(recycler__name=request.user)})
 
 class OrderDetailView(LoginRequiredMixin, DetailView):
     model = Order
     template_name = "my_order_detail.html"
+
+class OrderRecyclerDetailView(LoginRequiredMixin, DetailView):
+    model = Order
+    template_name = "recycler_order_detail.html"
+
+class OrderDeleteView(LoginRequiredMixin, DeleteView):
+    model = Order
+    template_name = "delete_order.html"
+    success_url = reverse_lazy("base:clients-detail-view")

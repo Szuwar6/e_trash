@@ -9,9 +9,8 @@
     <p>Adres: {{ order.address }}</p>
     <p>Śmieci: {{ order.trash_type }}</p>
 
-<p><a href="{% url 'base:orders-list' %}">Lista Zamówień</a></p>
+<p><a href="{% url 'base:orders-recycler-list' %}">Lista Zamówień</a></p>
 
-<p><a href="{% url 'base:orders-delete-view' pk=order.pk %}">Anuluj zamówienie</a></p>
 
 
 {% endblock %}

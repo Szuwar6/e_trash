@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+
+    <p>Zamówienia:</p>
+    {% for o in orders %}
+<p><a href="{% url 'base:orders-recycler-detail-view' pk=o.pk %}">Zamówienie nr: {{ o }}</a></p>
+
+
+
+
+    {% endfor %}
+<p><a href="{% url 'base:recycler-detail-view' %}">Powrót</a></p>
+{% endblock %}
