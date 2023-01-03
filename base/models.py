@@ -1,5 +1,6 @@
 from django.db import models
 from multiselectfield import MultiSelectField
+from django.core.validators import RegexValidator
 
 from trash.models import Trash
 from django.contrib.auth.models import User
@@ -13,11 +14,13 @@ class Zone(models.Model):
 
 
 class Client(models.Model):
+    phone_regex = RegexValidator(regex=r'^\d{3}-\d{3}-\d{3}$',
+                                 message="Numer telefonu musi być w formacie 'xxx-xxx-xxx'")
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
     first_name = models.CharField("Imię", max_length=128)
     last_name = models.CharField("Nazwisko", max_length=128)
-    email = models.CharField("Adres email", max_length=128)  # walidacja
-    phone = models.IntegerField("Telefon", max_length=9)  # walidacja przedrostek
+    email = models.EmailField("Adres email")
+    phone = models.CharField("Telefon", validators=[phone_regex], max_length=11)
     strefa = models.ForeignKey(
         Zone, on_delete=models.CASCADE, related_name="clients", blank=True, null=True
     )
@@ -27,10 +30,11 @@ class Client(models.Model):
 
 
 class Address(models.Model):
+    postal_code_regex = RegexValidator(regex=r'^\d{2}-\d{3}$', message="Kod pocztowy musi być w formacie 'xx-xxx'")
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
     street = models.CharField("Ulica", max_length=128)
     city = models.CharField("Miasto", max_length=128)
-    postal_code = models.PositiveSmallIntegerField("Kod pocztowy", max_length=5)
+    postal_code = models.CharField("Kod pocztowy", validators=[postal_code_regex], max_length=6)
 
     class Meta:
         verbose_name_plural = "Addresses"
@@ -52,13 +56,15 @@ day = models.CharField(max_length=15, choices=Availability.choices)
 
 
 class Recycler(models.Model):
+    postal_code_regex = RegexValidator(regex=r'^\d{2}-\d{3}$', message="Kod pocztowy musi być w formacie 'xx-xxx'")
+    nip_regex = RegexValidator(regex=r'^\d{3}-\d{3}-\d{2}-\d{2}$', message="NIP musi być w formacie 'xxx-xxx-xx-xx'")
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
     CAPACITY_VALUES = [(1, 1), (2, 2), (3, 3), (4, 4), (5, 5)]
     name = models.CharField("Nazwa", max_length=128)
     street = models.CharField("Ulica", max_length=128)
     city = models.CharField("Miasto", max_length=128)
-    postal_code = models.PositiveSmallIntegerField("Kod Pocztowy", max_length=5)
-    nip = models.IntegerField("NIP", max_length=10)
+    postal_code = models.CharField("Kod pocztowy", validators=[postal_code_regex], max_length=6)
+    nip = models.CharField("NIP",validators=[nip_regex], max_length=13)
     available_days = MultiSelectField("Dostępne dni", choices=Availability.choices, default='PN', max_length=128)
     capacity = MultiSelectField("Pojemność", choices=CAPACITY_VALUES, max_choices=1, max_length=128, default=1)
     type = MultiSelectField("Rodzaj śmieci", choices=Trash.choices, max_length=128)

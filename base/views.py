@@ -169,12 +169,22 @@ def orders_list(request):
 
 
 @login_required
+# Też działa
+# def orders_recycler_list(request):
+#     recycler = request.user.recycler
+#     orders = Order.objects.filter(recycler=recycler)
+#     return render(
+#         request,
+#         template_name="orders_recycler_list.html",
+#         context={"orders": orders}
+#     )
+
 def orders_recycler_list(request):
     return render(
         request,
 
         template_name="orders_recycler_list.html",
-        context={"orders": Order.objects.filter(recycler__name=request.user)})
+        context={"orders": Order.objects.filter(recycler=request.user.recycler)})
 
 
 class OrderDetailView(LoginRequiredMixin, DetailView):
