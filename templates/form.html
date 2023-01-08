@@ -1,8 +1,10 @@
 {% extends "base.html" %}
+{% load crispy_forms_tags %}
 {% block content %}
+<h4>FORMULARZ ZAMÓWIENIA ODBIORU ODPADÓW</h4>
 <form method="post">
     {% csrf_token %}
-    {{ form.as_p }}
+    {{ form|crispy }}
     <input type="submit" value="Zatwierdź">
 </form>
 {% endblock %}
