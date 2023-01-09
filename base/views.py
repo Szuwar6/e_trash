@@ -201,3 +201,32 @@ class OrderDeleteView(LoginRequiredMixin, DeleteView):
     model = Order
     template_name = "delete_order.html"
     success_url = reverse_lazy("base:clients-detail-view")
+
+
+# def check_profile(request):
+#     client = Client.objects.filter(user=request.user)
+#     if not client:
+#         return redirect("/base/clients-form-view/")
+#
+#     address = Address.objects.filter(user=request.user)
+#     if not address:
+#         return redirect("/base/clients-form-view/")
+#
+#     return redirect("/base/clients-detail-view")
+@login_required
+def check_profile(request):
+    if not Client.objects.filter(user=request.user).exists():
+        return redirect("/base/clients-form-view/")
+
+    if not Address.objects.filter(user=request.user).exists():
+        return redirect("/base/clients-form-view/")
+
+    return redirect("/base/clients-detail-view")
+
+
+@login_required
+def check_recycler(request):
+    if not Recycler.objects.filter(user=request.user).exists():
+        return redirect("/base/recyclers-form-view/")
+
+    return redirect("/base/recycler-detail-view")

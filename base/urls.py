@@ -20,4 +20,6 @@ urlpatterns = [
     path("orders-delete-view/<pk>", views.OrderDeleteView.as_view(), name="orders-delete-view"),
     path("orders-recycler-list/", views.orders_recycler_list, name="orders-recycler-list"),
     path("orders-recycler-detail-view/<pk>", views.OrderRecyclerDetailView.as_view(), name="orders-recycler-detail-view"),
+    path("check-profile/", views.check_profile, name="check-profile"),
+    path("check-recycler/", views.check_recycler, name="check-recycler"),
     ]
