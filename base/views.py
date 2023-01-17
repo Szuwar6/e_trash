@@ -1,11 +1,11 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import HttpResponse, request
+
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse
-from django.views import View
+
 from django.views.generic import (
-    CreateView,
+
     ListView,
     DetailView,
     UpdateView,
@@ -41,7 +41,7 @@ def client_address_create(request):
         Address.objects.create(
             user=request.user, street=street, city=city, postal_code=postal_code
         )
-        return redirect("/base/clients-detail-view/")
+        return redirect(reverse("base:clients-detail-view"))
     return render(
         request,
         template_name="client_address.html",
@@ -128,7 +128,7 @@ class ClientDeleteView(LoginRequiredMixin, DeleteView):
 
 
 class RecyclerFormView(LoginRequiredMixin, FormView):
-    template_name = "form.html"
+    template_name = "recycler.html"
     form_class = RecyclerForm
     success_url = reverse_lazy("base:recycler-detail-view")
 
@@ -173,13 +173,12 @@ def order_user(request):
             trash = form.cleaned_data["trash_type"]
             if trash == "Odpad Elektryczny":
                 return redirect(reverse("trash:orders-ewaste"))
-                # return redirect("/trash/orders-ewaste/")
-            if trash == "Odpady z Recyklingu":
-                return redirect("/trash/orders-rwaste/")
-            if trash == "Niebezpieczne Odpady":
-                return redirect("/trash/orders-hwaste/")
-            if trash == "Wielkogabarytowe Odpady":
-                return redirect("/trash/orders-lswaste/")
+            elif trash == "Odpady z Recyklingu":
+                return redirect(reverse("trash:orders-rwaste"))
+            elif trash == "Niebezpieczne Odpady":
+                return redirect(reverse("trash:orders-hwaste"))
+            elif trash == "Wielkogabarytowe Odpady":
+                return redirect(reverse("trash:orders-lswaste"))
 
     else:
         form = OrderForm
@@ -195,16 +194,6 @@ def orders_list(request):
     )
 
 
-@login_required
-# Też działa
-# def orders_recycler_list(request):
-#     recycler = request.user.recycler
-#     orders = Order.objects.filter(recycler=recycler)
-#     return render(
-#         request,
-#         template_name="orders_recycler_list.html",
-#         context={"orders": orders}
-#     )
 
 
 def orders_recycler_list(request):
@@ -231,30 +220,21 @@ class OrderDeleteView(LoginRequiredMixin, DeleteView):
     success_url = reverse_lazy("base:clients-detail-view")
 
 
-# def check_profile(request):
-#     client = Client.objects.filter(user=request.user)
-#     if not client:
-#         return redirect("/base/clients-form-view/")
-#
-#     address = Address.objects.filter(user=request.user)
-#     if not address:
-#         return redirect("/base/clients-form-view/")
-#
-#     return redirect("/base/clients-detail-view")
+
 @login_required
 def check_profile(request):
     if not Client.objects.filter(user=request.user).exists():
-        return redirect("/base/clients-form-view/")
+        return redirect(reverse("base:clients-form-view"))
 
     if not Address.objects.filter(user=request.user).exists():
-        return redirect("/base/clients-form-view/")
+        return redirect(reverse("base:clients-form-view"))
 
-    return redirect("/base/clients-detail-view")
+    return redirect(reverse("base:clients-detail-view"))
 
 
 @login_required
 def check_recycler(request):
     if not Recycler.objects.filter(user=request.user).exists():
-        return redirect("/base/recyclers-form-view/")
+        return redirect(reverse("base:recyclers-form-view"))
 
-    return redirect("/base/recycler-detail-view")
+    return redirect(reverse("base:recycler-detail-view"))
