@@ -4,7 +4,14 @@ from django.http import HttpResponse, request
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse
 from django.views import View
-from django.views.generic import CreateView, ListView, DetailView, UpdateView, DeleteView, FormView
+from django.views.generic import (
+    CreateView,
+    ListView,
+    DetailView,
+    UpdateView,
+    DeleteView,
+    FormView,
+)
 
 from base.forms import ClientForm, AddressForm, RecyclerForm, OrderForm
 from base.models import Client, Address, Recycler, Order
@@ -23,15 +30,23 @@ def client_address_create(request):
         street = form_2.cleaned_data["street"]
         city = form_2.cleaned_data["city"]
         postal_code = form_2.cleaned_data["postal_code"]
-        client = Client.objects.create(user=request.user, first_name=first_name, last_name=last_name, email=email,
-                                       phone=phone, strefa=strefa)
-        Address.objects.create(user=request.user, street=street, city=city, postal_code=postal_code)
+        client = Client.objects.create(
+            user=request.user,
+            first_name=first_name,
+            last_name=last_name,
+            email=email,
+            phone=phone,
+            strefa=strefa,
+        )
+        Address.objects.create(
+            user=request.user, street=street, city=city, postal_code=postal_code
+        )
         return redirect("/base/clients-detail-view/")
     return render(
         request,
         template_name="client_address.html",
-        context={"form": form,
-                 "form_2": form_2})
+        context={"form": form, "form_2": form_2},
+    )
 
 
 class CurrentUserMixin(object):
@@ -77,21 +92,31 @@ class RecyclerDetailView(LoginRequiredMixin, CurrentRecyclerMixin, DetailView):
 
 class ClientUpdateView(LoginRequiredMixin, CurrentUserMixin, UpdateView):
     model = Client
-    fields = ['first_name', 'last_name', 'email', 'phone', 'strefa']
+    fields = ["first_name", "last_name", "email", "phone", "strefa"]
     template_name = "form.html"
     success_url = reverse_lazy("base:clients-detail-view")
 
 
 class AddressUpdateView(LoginRequiredMixin, CurrentAddressMixin, UpdateView):
     model = Address
-    fields = ['street', 'city', 'postal_code']
+    fields = ["street", "city", "postal_code"]
     template_name = "form.html"
     success_url = reverse_lazy("base:clients-detail-view")
 
 
 class RecyclerUpdateView(LoginRequiredMixin, CurrentRecyclerMixin, UpdateView):
     model = Recycler
-    fields = ['name', 'street', 'city', 'postal_code', 'nip', 'available_days', 'capacity', 'type', 'strefa']
+    fields = [
+        "name",
+        "street",
+        "city",
+        "postal_code",
+        "nip",
+        "available_days",
+        "capacity",
+        "type",
+        "strefa",
+    ]
     template_name = "form.html"
     success_url = reverse_lazy("base:recycler-detail-view")
 
@@ -128,7 +153,7 @@ class RecyclerFormView(LoginRequiredMixin, FormView):
             available_days=available_days,
             capacity=capacity,
             type=type,
-            strefa=strefa
+            strefa=strefa,
         )
         return result
 
@@ -147,7 +172,8 @@ def order_user(request):
             form.save()
             trash = form.cleaned_data["trash_type"]
             if trash == "Odpad Elektryczny":
-                return redirect("/trash/orders-ewaste/")
+                return redirect(reverse("trash:orders-ewaste"))
+                # return redirect("/trash/orders-ewaste/")
             if trash == "Odpady z Recyklingu":
                 return redirect("/trash/orders-rwaste/")
             if trash == "Niebezpieczne Odpady":
@@ -157,7 +183,7 @@ def order_user(request):
 
     else:
         form = OrderForm
-    return render(request, 'form.html', {"form": form})
+    return render(request, "form.html", {"form": form})
 
 
 @login_required
@@ -165,7 +191,8 @@ def orders_list(request):
     return render(
         request,
         template_name="orders_list.html",
-        context={"orders": Order.objects.filter(user=request.user)})
+        context={"orders": Order.objects.filter(user=request.user)},
+    )
 
 
 @login_required
@@ -179,12 +206,13 @@ def orders_list(request):
 #         context={"orders": orders}
 #     )
 
+
 def orders_recycler_list(request):
     return render(
         request,
-
         template_name="orders_recycler_list.html",
-        context={"orders": Order.objects.filter(recycler=request.user.recycler)})
+        context={"orders": Order.objects.filter(recycler=request.user.recycler)},
+    )
 
 
 class OrderDetailView(LoginRequiredMixin, DetailView):
