@@ -64,7 +64,7 @@ class Recycler(models.Model):
     street = models.CharField("Ulica", max_length=128)
     city = models.CharField("Miasto", max_length=128)
     postal_code = models.CharField("Kod pocztowy", validators=[postal_code_regex], max_length=6)
-    nip = models.CharField("NIP",validators=[nip_regex], max_length=13)
+    nip = models.CharField("NIP", validators=[nip_regex], max_length=13)
     available_days = MultiSelectField("Dostępne dni", choices=Availability.choices, default='PN', max_length=128)
     capacity = MultiSelectField("Pojemność", choices=CAPACITY_VALUES, max_choices=1, max_length=128, default=1)
     type = MultiSelectField("Rodzaj śmieci", choices=Trash.choices, max_length=128)

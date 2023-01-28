@@ -1,10 +1,17 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import HttpResponse, request
+
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse
-from django.views import View
-from django.views.generic import CreateView, ListView, DetailView, UpdateView, DeleteView, FormView
+
+from django.views.generic import (
+
+    ListView,
+    DetailView,
+    UpdateView,
+    DeleteView,
+    FormView,
+)
 
 from base.forms import ClientForm, AddressForm, RecyclerForm, OrderForm
 from base.models import Client, Address, Recycler, Order
@@ -23,15 +30,23 @@ def client_address_create(request):
         street = form_2.cleaned_data["street"]
         city = form_2.cleaned_data["city"]
         postal_code = form_2.cleaned_data["postal_code"]
-        client = Client.objects.create(user=request.user, first_name=first_name, last_name=last_name, email=email,
-                                       phone=phone, strefa=strefa)
-        Address.objects.create(user=request.user, street=street, city=city, postal_code=postal_code)
-        return redirect("/base/clients-detail-view/")
+        client = Client.objects.create(
+            user=request.user,
+            first_name=first_name,
+            last_name=last_name,
+            email=email,
+            phone=phone,
+            strefa=strefa,
+        )
+        Address.objects.create(
+            user=request.user, street=street, city=city, postal_code=postal_code
+        )
+        return redirect(reverse("base:clients-detail-view"))
     return render(
         request,
         template_name="client_address.html",
-        context={"form": form,
-                 "form_2": form_2})
+        context={"form": form, "form_2": form_2},
+    )
 
 
 class CurrentUserMixin(object):
@@ -77,21 +92,31 @@ class RecyclerDetailView(LoginRequiredMixin, CurrentRecyclerMixin, DetailView):
 
 class ClientUpdateView(LoginRequiredMixin, CurrentUserMixin, UpdateView):
     model = Client
-    fields = ['first_name', 'last_name', 'email', 'phone', 'strefa']
+    fields = ["first_name", "last_name", "email", "phone", "strefa"]
     template_name = "form.html"
     success_url = reverse_lazy("base:clients-detail-view")
 
 
 class AddressUpdateView(LoginRequiredMixin, CurrentAddressMixin, UpdateView):
     model = Address
-    fields = ['street', 'city', 'postal_code']
+    fields = ["street", "city", "postal_code"]
     template_name = "form.html"
     success_url = reverse_lazy("base:clients-detail-view")
 
 
 class RecyclerUpdateView(LoginRequiredMixin, CurrentRecyclerMixin, UpdateView):
     model = Recycler
-    fields = ['name', 'street', 'city', 'postal_code', 'nip', 'available_days', 'capacity', 'type', 'strefa']
+    fields = [
+        "name",
+        "street",
+        "city",
+        "postal_code",
+        "nip",
+        "available_days",
+        "capacity",
+        "type",
+        "strefa",
+    ]
     template_name = "form.html"
     success_url = reverse_lazy("base:recycler-detail-view")
 
@@ -103,7 +128,7 @@ class ClientDeleteView(LoginRequiredMixin, DeleteView):
 
 
 class RecyclerFormView(LoginRequiredMixin, FormView):
-    template_name = "form.html"
+    template_name = "recycler.html"
     form_class = RecyclerForm
     success_url = reverse_lazy("base:recycler-detail-view")
 
@@ -128,7 +153,7 @@ class RecyclerFormView(LoginRequiredMixin, FormView):
             available_days=available_days,
             capacity=capacity,
             type=type,
-            strefa=strefa
+            strefa=strefa,
         )
         return result
 
@@ -147,17 +172,17 @@ def order_user(request):
             form.save()
             trash = form.cleaned_data["trash_type"]
             if trash == "Odpad Elektryczny":
-                return redirect("/trash/orders-ewaste/")
-            if trash == "Odpady z Recyklingu":
-                return redirect("/trash/orders-rwaste/")
-            if trash == "Niebezpieczne Odpady":
-                return redirect("/trash/orders-hwaste/")
-            if trash == "Wielkogabarytowe Odpady":
-                return redirect("/trash/orders-lswaste/")
+                return redirect(reverse("trash:orders-ewaste"))
+            elif trash == "Odpady z Recyklingu":
+                return redirect(reverse("trash:orders-rwaste"))
+            elif trash == "Niebezpieczne Odpady":
+                return redirect(reverse("trash:orders-hwaste"))
+            elif trash == "Wielkogabarytowe Odpady":
+                return redirect(reverse("trash:orders-lswaste"))
 
     else:
         form = OrderForm
-    return render(request, 'form.html', {"form": form})
+    return render(request, "form.html", {"form": form})
 
 
 @login_required
@@ -165,26 +190,18 @@ def orders_list(request):
     return render(
         request,
         template_name="orders_list.html",
-        context={"orders": Order.objects.filter(user=request.user)})
+        context={"orders": Order.objects.filter(user=request.user)},
+    )
 
 
-@login_required
-# Też działa
-# def orders_recycler_list(request):
-#     recycler = request.user.recycler
-#     orders = Order.objects.filter(recycler=recycler)
-#     return render(
-#         request,
-#         template_name="orders_recycler_list.html",
-#         context={"orders": orders}
-#     )
+
 
 def orders_recycler_list(request):
     return render(
         request,
-
         template_name="orders_recycler_list.html",
-        context={"orders": Order.objects.filter(recycler=request.user.recycler)})
+        context={"orders": Order.objects.filter(recycler=request.user.recycler)},
+    )
 
 
 class OrderDetailView(LoginRequiredMixin, DetailView):
@@ -203,30 +220,21 @@ class OrderDeleteView(LoginRequiredMixin, DeleteView):
     success_url = reverse_lazy("base:clients-detail-view")
 
 
-# def check_profile(request):
-#     client = Client.objects.filter(user=request.user)
-#     if not client:
-#         return redirect("/base/clients-form-view/")
-#
-#     address = Address.objects.filter(user=request.user)
-#     if not address:
-#         return redirect("/base/clients-form-view/")
-#
-#     return redirect("/base/clients-detail-view")
+
 @login_required
 def check_profile(request):
     if not Client.objects.filter(user=request.user).exists():
-        return redirect("/base/clients-form-view/")
+        return redirect(reverse("base:clients-form-view"))
 
     if not Address.objects.filter(user=request.user).exists():
-        return redirect("/base/clients-form-view/")
+        return redirect(reverse("base:clients-form-view"))
 
-    return redirect("/base/clients-detail-view")
+    return redirect(reverse("base:clients-detail-view"))
 
 
 @login_required
 def check_recycler(request):
     if not Recycler.objects.filter(user=request.user).exists():
-        return redirect("/base/recyclers-form-view/")
+        return redirect(reverse("base:recyclers-form-view"))
 
-    return redirect("/base/recycler-detail-view")
+    return redirect(reverse("base:recycler-detail-view"))
