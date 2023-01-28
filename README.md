@@ -25,7 +25,6 @@ This is an application where you can manage and make some garbage orders for dif
 1. Clone the project:
 ```git clone https://github.com/Szuwar6/e_trash```
 2. Navigate to the .docker directory:
-```cd .docker```
 ```docker-compose up --build```
 3. Go to the web browser and type:
 ```127.0.0.1:8000```
