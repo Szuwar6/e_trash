@@ -28,13 +28,4 @@ urlpatterns = [
     path("lswastes-detail-view/<pk>", views.LSWasteDetailView.as_view(), name="lswastes-detail-view"),
     path("lswastes-update-view/<pk>", views.LSWasteUpdateView.as_view(), name="lswastes-update-view"),
     path("lswastes-delete-view/<pk>", views.LSWasteDeleteView.as_view(), name="lswastes-delete-view"),
-    path("orders-ewaste/", views.order_ewaste, name = "orders-ewaste"),
-    path("orders-rwaste/", views.order_rwaste, name = "orders-rwaste"),
-    path("orders-hwaste/", views.order_hwaste, name = "orders-hwaste"),
-    path("orders-lswaste/", views.order_lswaste, name="orders-lswaste"),
-    path("ewastes-list/", views.ewastes, name="ewastes-list"),
-    path("rwastes-list/", views.rwastes, name="rwastes-list"),
-    path("hwastes-list/", views.hwastes, name="hwastes-list"),
-    path("lswastes-list/", views.lswastes, name="lswastes-list"),
-
     ]

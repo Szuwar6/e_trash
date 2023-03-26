@@ -53,16 +53,25 @@ class TrashDeleteView(LoginRequiredMixin, DeleteView):
 
 
 class EWasteListView(LoginRequiredMixin, ListView):
-    template_name = "list_view.html"
     model = EWaste
+    template_name = "ewastes.html"
+    context_object_name = "ewastes"
+
+    def get_queryset(self):
+        return EWaste.objects.filter(user=self.request.user)
+
 
 
 class EWasteCreateView(LoginRequiredMixin, CreateView):
     model = EWaste
-    fields = "__all__"
+    form_class = OrderEwasteForm
     template_name = "form.html"
-    success_url = reverse_lazy("homepage")
+    success_url = reverse_lazy("base:clients-detail-view")
 
+    def form_valid(self, form):
+        form.instance.client = self.request.user.client
+        form.instance.user = self.request.user
+        return super().form_valid(form)
 
 class EWasteDetailView(LoginRequiredMixin, DetailView):
     model = EWaste
@@ -83,15 +92,24 @@ class EWasteDeleteView(LoginRequiredMixin, DeleteView):
 
 
 class RWasteListView(LoginRequiredMixin, ListView):
-    template_name = "list_view.html"
     model = RWaste
+    template_name = "rwastes.html"
+    context_object_name = "rwastes"
+
+    def get_queryset(self):
+        return RWaste.objects.filter(user=self.request.user)
 
 
 class RWasteCreateView(LoginRequiredMixin, CreateView):
     model = RWaste
-    fields = "__all__"
+    form_class = OrderRwasteForm
     template_name = "form.html"
-    success_url = reverse_lazy("homepage")
+    success_url = reverse_lazy("base:clients-detail-view")
+
+    def form_valid(self, form):
+        form.instance.client = self.request.user.client
+        form.instance.user = self.request.user
+        return super().form_valid(form)
 
 
 class RWasteDetailView(LoginRequiredMixin, DetailView):
@@ -113,15 +131,24 @@ class RWasteDeleteView(LoginRequiredMixin, DeleteView):
 
 
 class HWasteListView(LoginRequiredMixin, ListView):
-    template_name = "list_view.html"
     model = HWaste
+    template_name = "hwastes.html"
+    context_object_name = "hwastes"
+
+    def get_queryset(self):
+        return HWaste.objects.filter(user=self.request.user)
 
 
 class HWasteCreateView(LoginRequiredMixin, CreateView):
     model = HWaste
-    fields = "__all__"
+    form_class = OrderHwasteForm
     template_name = "form.html"
-    success_url = reverse_lazy("homepage")
+    success_url = reverse_lazy("base:clients-detail-view")
+
+    def form_valid(self, form):
+        form.instance.client = self.request.user.client
+        form.instance.user = self.request.user
+        return super().form_valid(form)
 
 
 class HWasteDetailView(LoginRequiredMixin, DetailView):
@@ -143,15 +170,24 @@ class HWasteDeleteView(LoginRequiredMixin, DeleteView):
 
 
 class LSWasteListView(LoginRequiredMixin, ListView):
-    template_name = "list_view.html"
     model = LSWaste
+    template_name = "lswastes.html"
+    context_object_name = "lswastes"
+
+    def get_queryset(self):
+        return LSWaste.objects.filter(user=self.request.user)
 
 
 class LSWasteCreateView(LoginRequiredMixin, CreateView):
     model = LSWaste
-    fields = "__all__"
+    form_class = OrderLswasteForm
     template_name = "form.html"
-    success_url = reverse_lazy("homepage")
+    success_url = reverse_lazy("base:clients-detail-view")
+
+    def form_valid(self, form):
+        form.instance.client = self.request.user.client
+        form.instance.user = self.request.user
+        return super().form_valid(form)
 
 
 class LSWasteDetailView(LoginRequiredMixin, DetailView):
@@ -170,95 +206,3 @@ class LSWasteDeleteView(LoginRequiredMixin, DeleteView):
     model = LSWaste
     template_name = "delete_lswaste.html"
     success_url = reverse_lazy("homepage")
-
-
-@login_required
-def order_ewaste(request):
-    if request.method == "POST":
-        form = OrderEwasteForm(request.POST)
-        if form.is_valid():
-            form.instance.client = request.user.client
-            form.instance.user = request.user
-            form.save()
-            return redirect(reverse("base:clients-detail-view"))
-    else:
-        form = OrderEwasteForm
-    return render(request, "form.html", {"form": form})
-
-
-@login_required
-def order_rwaste(request):
-    if request.method == "POST":
-        form = OrderRwasteForm(request.POST)
-        if form.is_valid():
-            form.instance.client = request.user.client
-            form.instance.user = request.user
-            form.save()
-            return redirect(reverse("base:clients-detail-view"))
-    else:
-        form = OrderRwasteForm
-    return render(request, "form.html", {"form": form})
-
-
-@login_required
-def order_hwaste(request):
-    if request.method == "POST":
-        form = OrderHwasteForm(request.POST)
-        if form.is_valid():
-            form.instance.client = request.user.client
-            form.instance.user = request.user
-            form.save()
-            return redirect(reverse("base:clients-detail-view"))
-    else:
-        form = OrderHwasteForm
-    return render(request, "form.html", {"form": form})
-
-
-@login_required
-def order_lswaste(request):
-    if request.method == "POST":
-        form = OrderLswasteForm(request.POST)
-        if form.is_valid():
-            form.instance.client = request.user.client
-            form.instance.user = request.user
-            form.save()
-            return redirect(reverse("base:clients-detail-view"))
-    else:
-        form = OrderLswasteForm
-    return render(request, "form.html", {"form": form})
-
-
-@login_required
-def ewastes(request):
-    return render(
-        request,
-        template_name="ewastes.html",
-        context={"ewastes": EWaste.objects.filter(user=request.user)},
-    )
-
-
-@login_required
-def rwastes(request):
-    return render(
-        request,
-        template_name="rwastes.html",
-        context={"rwastes": RWaste.objects.filter(user=request.user)},
-    )
-
-
-@login_required
-def hwastes(request):
-    return render(
-        request,
-        template_name="hwastes.html",
-        context={"hwastes": HWaste.objects.filter(user=request.user)},
-    )
-
-
-@login_required
-def lswastes(request):
-    return render(
-        request,
-        template_name="lswastes.html",
-        context={"lswastes": LSWaste.objects.filter(user=request.user)},
-    )
