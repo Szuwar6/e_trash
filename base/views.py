@@ -172,13 +172,13 @@ def order_user(request):
             form.save()
             trash = form.cleaned_data["trash_type"]
             if trash == "Odpad Elektryczny":
-                return redirect(reverse("trash:orders-ewaste"))
+                return redirect(reverse("trash:ewastes-create-view"))
             elif trash == "Odpady z Recyklingu":
-                return redirect(reverse("trash:orders-rwaste"))
+                return redirect(reverse("trash:rwastes-create-view"))
             elif trash == "Niebezpieczne Odpady":
-                return redirect(reverse("trash:orders-hwaste"))
+                return redirect(reverse("trash:hwastes-create-view"))
             elif trash == "Wielkogabarytowe Odpady":
-                return redirect(reverse("trash:orders-lswaste"))
+                return redirect(reverse("trash:lswastes-create-view"))
 
     else:
         form = OrderForm
