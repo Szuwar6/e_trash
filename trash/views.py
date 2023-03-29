@@ -61,7 +61,6 @@ class EWasteListView(LoginRequiredMixin, ListView):
         return EWaste.objects.filter(user=self.request.user)
 
 
-
 class EWasteCreateView(LoginRequiredMixin, CreateView):
     model = EWaste
     form_class = OrderEwasteForm
@@ -72,6 +71,7 @@ class EWasteCreateView(LoginRequiredMixin, CreateView):
         form.instance.client = self.request.user.client
         form.instance.user = self.request.user
         return super().form_valid(form)
+
 
 class EWasteDetailView(LoginRequiredMixin, DetailView):
     model = EWaste
