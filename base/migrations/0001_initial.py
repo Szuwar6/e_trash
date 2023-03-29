@@ -16,102 +16,318 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Address',
+            name="Address",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('street', models.CharField(max_length=128, verbose_name='Ulica')),
-                ('city', models.CharField(max_length=128, verbose_name='Miasto')),
-                ('postal_code', models.PositiveSmallIntegerField(max_length=5, verbose_name='Kod pocztowy')),
-                ('user', models.OneToOneField(null=True, on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("street", models.CharField(max_length=128, verbose_name="Ulica")),
+                ("city", models.CharField(max_length=128, verbose_name="Miasto")),
+                (
+                    "postal_code",
+                    models.PositiveSmallIntegerField(
+                        max_length=5, verbose_name="Kod pocztowy"
+                    ),
+                ),
+                (
+                    "user",
+                    models.OneToOneField(
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
             options={
-                'verbose_name_plural': 'Addresses',
+                "verbose_name_plural": "Addresses",
             },
         ),
         migrations.CreateModel(
-            name='Client',
+            name="Client",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('first_name', models.CharField(max_length=128, verbose_name='Imię')),
-                ('last_name', models.CharField(max_length=128, verbose_name='Nazwisko')),
-                ('email', models.CharField(max_length=128, verbose_name='Adres email')),
-                ('phone', models.IntegerField(max_length=9, verbose_name='Telefon')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("first_name", models.CharField(max_length=128, verbose_name="Imię")),
+                (
+                    "last_name",
+                    models.CharField(max_length=128, verbose_name="Nazwisko"),
+                ),
+                ("email", models.CharField(max_length=128, verbose_name="Adres email")),
+                ("phone", models.IntegerField(max_length=9, verbose_name="Telefon")),
             ],
         ),
         migrations.CreateModel(
-            name='Order',
+            name="Order",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('order_day', models.CharField(choices=[('Poniedziałek', 'Poniedziałek'), ('Wtorek', 'Wtorek'), ('Środa', 'Środa'), ('Czwartek', 'Czwartek'), ('Piątek', 'Piątek'), ('Sobota', 'Sobota')], default='PN', max_length=15, verbose_name='Wybierz dzień tygodnia')),
-                ('order_time', models.CharField(choices=[('8.00 - 10.00', '8.00 - 10.00'), ('10.00 - 12.00', '10.00 - 12.00'), ('12.00 - 14.00', '12.00 - 14.00'), ('14.00 - 16.00', '14.00 - 16.00'), ('16.00 - 18.00', '16.00 - 18.00')], default=0, max_length=128, verbose_name='Wybierz godzinę odbioru')),
-                ('order_date', models.DateTimeField(auto_now_add=True)),
-                ('trash_type', models.CharField(choices=[('Odpad Elektryczny', 'Odpad Elektryczny'), ('Odpady z Recyklingu', 'Odpady z Recyklingu'), ('Niebezpieczne Odpady', 'Niebezpieczne Odpady'), ('Wielkogabarytowe Odpady', 'Wielkogabarytowe Odpady')], max_length=32, verbose_name='Wybierz typ odpadów')),
-                ('address', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='orders', to='base.address')),
-                ('client', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='orders', to='base.client')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "order_day",
+                    models.CharField(
+                        choices=[
+                            ("Poniedziałek", "Poniedziałek"),
+                            ("Wtorek", "Wtorek"),
+                            ("Środa", "Środa"),
+                            ("Czwartek", "Czwartek"),
+                            ("Piątek", "Piątek"),
+                            ("Sobota", "Sobota"),
+                        ],
+                        default="PN",
+                        max_length=15,
+                        verbose_name="Wybierz dzień tygodnia",
+                    ),
+                ),
+                (
+                    "order_time",
+                    models.CharField(
+                        choices=[
+                            ("8.00 - 10.00", "8.00 - 10.00"),
+                            ("10.00 - 12.00", "10.00 - 12.00"),
+                            ("12.00 - 14.00", "12.00 - 14.00"),
+                            ("14.00 - 16.00", "14.00 - 16.00"),
+                            ("16.00 - 18.00", "16.00 - 18.00"),
+                        ],
+                        default=0,
+                        max_length=128,
+                        verbose_name="Wybierz godzinę odbioru",
+                    ),
+                ),
+                ("order_date", models.DateTimeField(auto_now_add=True)),
+                (
+                    "trash_type",
+                    models.CharField(
+                        choices=[
+                            ("Odpad Elektryczny", "Odpad Elektryczny"),
+                            ("Odpady z Recyklingu", "Odpady z Recyklingu"),
+                            ("Niebezpieczne Odpady", "Niebezpieczne Odpady"),
+                            ("Wielkogabarytowe Odpady", "Wielkogabarytowe Odpady"),
+                        ],
+                        max_length=32,
+                        verbose_name="Wybierz typ odpadów",
+                    ),
+                ),
+                (
+                    "address",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="orders",
+                        to="base.address",
+                    ),
+                ),
+                (
+                    "client",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="orders",
+                        to="base.client",
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='Recycler',
+            name="Recycler",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=128, verbose_name='Nazwa')),
-                ('street', models.CharField(max_length=128, verbose_name='Ulica')),
-                ('city', models.CharField(max_length=128, verbose_name='Miasto')),
-                ('postal_code', models.PositiveSmallIntegerField(max_length=5, verbose_name='Kod Pocztowy')),
-                ('nip', models.IntegerField(max_length=10, verbose_name='NIP')),
-                ('available_days', multiselectfield.db.fields.MultiSelectField(choices=[('Poniedziałek', 'Poniedziałek'), ('Wtorek', 'Wtorek'), ('Środa', 'Środa'), ('Czwartek', 'Czwartek'), ('Piątek', 'Piątek'), ('Sobota', 'Sobota')], default='PN', max_length=128, verbose_name='Dostępne dni')),
-                ('capacity', multiselectfield.db.fields.MultiSelectField(choices=[(1, 1), (2, 2), (3, 3), (4, 4), (5, 5)], default=1, max_length=128, verbose_name='Pojemność')),
-                ('type', multiselectfield.db.fields.MultiSelectField(choices=[('Odpad Elektryczny', 'Odpad Elektryczny'), ('Odpady z Recyklingu', 'Odpady z Recyklingu'), ('Niebezpieczne Odpady', 'Niebezpieczne Odpady'), ('Wielkogabarytowe Odpady', 'Wielkogabarytowe Odpady')], max_length=128, verbose_name='Rodzaj śmieci')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=128, verbose_name="Nazwa")),
+                ("street", models.CharField(max_length=128, verbose_name="Ulica")),
+                ("city", models.CharField(max_length=128, verbose_name="Miasto")),
+                (
+                    "postal_code",
+                    models.PositiveSmallIntegerField(
+                        max_length=5, verbose_name="Kod Pocztowy"
+                    ),
+                ),
+                ("nip", models.IntegerField(max_length=10, verbose_name="NIP")),
+                (
+                    "available_days",
+                    multiselectfield.db.fields.MultiSelectField(
+                        choices=[
+                            ("Poniedziałek", "Poniedziałek"),
+                            ("Wtorek", "Wtorek"),
+                            ("Środa", "Środa"),
+                            ("Czwartek", "Czwartek"),
+                            ("Piątek", "Piątek"),
+                            ("Sobota", "Sobota"),
+                        ],
+                        default="PN",
+                        max_length=128,
+                        verbose_name="Dostępne dni",
+                    ),
+                ),
+                (
+                    "capacity",
+                    multiselectfield.db.fields.MultiSelectField(
+                        choices=[(1, 1), (2, 2), (3, 3), (4, 4), (5, 5)],
+                        default=1,
+                        max_length=128,
+                        verbose_name="Pojemność",
+                    ),
+                ),
+                (
+                    "type",
+                    multiselectfield.db.fields.MultiSelectField(
+                        choices=[
+                            ("Odpad Elektryczny", "Odpad Elektryczny"),
+                            ("Odpady z Recyklingu", "Odpady z Recyklingu"),
+                            ("Niebezpieczne Odpady", "Niebezpieczne Odpady"),
+                            ("Wielkogabarytowe Odpady", "Wielkogabarytowe Odpady"),
+                        ],
+                        max_length=128,
+                        verbose_name="Rodzaj śmieci",
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='Zone',
+            name="Zone",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=128, verbose_name='Strefa')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=128, verbose_name="Strefa")),
             ],
         ),
         migrations.CreateModel(
-            name='RecyclerAssignedOrders',
+            name="RecyclerAssignedOrders",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('order_time', models.ManyToManyField(blank=True, null=True, related_name='assigned_orders', to='base.order')),
-                ('recycler', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='assigned_orders', to='base.recycler')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "order_time",
+                    models.ManyToManyField(
+                        blank=True,
+                        null=True,
+                        related_name="assigned_orders",
+                        to="base.order",
+                    ),
+                ),
+                (
+                    "recycler",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="assigned_orders",
+                        to="base.recycler",
+                    ),
+                ),
             ],
         ),
         migrations.AddField(
-            model_name='recycler',
-            name='strefa',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='recyclers', to='base.zone'),
+            model_name="recycler",
+            name="strefa",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="recyclers",
+                to="base.zone",
+            ),
         ),
         migrations.AddField(
-            model_name='recycler',
-            name='user',
-            field=models.OneToOneField(null=True, on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL),
+            model_name="recycler",
+            name="user",
+            field=models.OneToOneField(
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                to=settings.AUTH_USER_MODEL,
+            ),
         ),
         migrations.AddField(
-            model_name='order',
-            name='recycler',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='orders', to='base.recycler'),
+            model_name="order",
+            name="recycler",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="orders",
+                to="base.recycler",
+            ),
         ),
         migrations.AddField(
-            model_name='order',
-            name='strefa',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='orders', to='base.zone'),
+            model_name="order",
+            name="strefa",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="orders",
+                to="base.zone",
+            ),
         ),
         migrations.AddField(
-            model_name='order',
-            name='user',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.PROTECT, related_name='orders', to=settings.AUTH_USER_MODEL),
+            model_name="order",
+            name="user",
+            field=models.ForeignKey(
+                null=True,
+                on_delete=django.db.models.deletion.PROTECT,
+                related_name="orders",
+                to=settings.AUTH_USER_MODEL,
+            ),
         ),
         migrations.AddField(
-            model_name='client',
-            name='strefa',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='clients', to='base.zone'),
+            model_name="client",
+            name="strefa",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="clients",
+                to="base.zone",
+            ),
         ),
         migrations.AddField(
-            model_name='client',
-            name='user',
-            field=models.OneToOneField(null=True, on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL),
+            model_name="client",
+            name="user",
+            field=models.OneToOneField(
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                to=settings.AUTH_USER_MODEL,
+            ),
         ),
     ]

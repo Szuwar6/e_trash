@@ -11,54 +11,267 @@ class Migration(migrations.Migration):
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('base', '0001_initial'),
+        ("base", "0001_initial"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='RWaste',
+            name="RWaste",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('type', models.CharField(choices=[('Papier', 'Papier'), ('Plastik', 'Plastik'), ('Szkło', 'Szkło'), ('BIO', 'BIO')], max_length=10, verbose_name='Wybierz rodzaj odpadów:')),
-                ('trash_amount', models.PositiveSmallIntegerField(max_length=5, verbose_name='Pojemność worków(l)')),
-                ('client', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='rwastes', to='base.client')),
-                ('user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.PROTECT, related_name='rwastes', to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "type",
+                    models.CharField(
+                        choices=[
+                            ("Papier", "Papier"),
+                            ("Plastik", "Plastik"),
+                            ("Szkło", "Szkło"),
+                            ("BIO", "BIO"),
+                        ],
+                        max_length=10,
+                        verbose_name="Wybierz rodzaj odpadów:",
+                    ),
+                ),
+                (
+                    "trash_amount",
+                    models.PositiveSmallIntegerField(
+                        max_length=5, verbose_name="Pojemność worków(l)"
+                    ),
+                ),
+                (
+                    "client",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="rwastes",
+                        to="base.client",
+                    ),
+                ),
+                (
+                    "user",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.PROTECT,
+                        related_name="rwastes",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='LSWaste',
+            name="LSWaste",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('type', models.CharField(choices=[('Szafa', 'Szafa'), ('Fotel', 'Fotel'), ('Kanapa', 'Kanapa'), ('Stół', 'Stół'), ('Wanna', 'Wanna'), ('Komoda', 'Komoda'), ('Umywalka', 'Umywalka'), ('Łóżko', 'Łóżko'), ('Inne', 'Inne')], max_length=10, verbose_name='Wybierz rodzaj odpadów:')),
-                ('height', models.PositiveSmallIntegerField(max_length=5, verbose_name='Wysokość:')),
-                ('width', models.PositiveSmallIntegerField(max_length=5, verbose_name='Szerokość:')),
-                ('length', models.PositiveSmallIntegerField(max_length=5, verbose_name='Długość:')),
-                ('weight', models.PositiveSmallIntegerField(max_length=5, verbose_name='Waga:')),
-                ('client', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='lswastes', to='base.client')),
-                ('user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.PROTECT, related_name='lswastes', to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "type",
+                    models.CharField(
+                        choices=[
+                            ("Szafa", "Szafa"),
+                            ("Fotel", "Fotel"),
+                            ("Kanapa", "Kanapa"),
+                            ("Stół", "Stół"),
+                            ("Wanna", "Wanna"),
+                            ("Komoda", "Komoda"),
+                            ("Umywalka", "Umywalka"),
+                            ("Łóżko", "Łóżko"),
+                            ("Inne", "Inne"),
+                        ],
+                        max_length=10,
+                        verbose_name="Wybierz rodzaj odpadów:",
+                    ),
+                ),
+                (
+                    "height",
+                    models.PositiveSmallIntegerField(
+                        max_length=5, verbose_name="Wysokość:"
+                    ),
+                ),
+                (
+                    "width",
+                    models.PositiveSmallIntegerField(
+                        max_length=5, verbose_name="Szerokość:"
+                    ),
+                ),
+                (
+                    "length",
+                    models.PositiveSmallIntegerField(
+                        max_length=5, verbose_name="Długość:"
+                    ),
+                ),
+                (
+                    "weight",
+                    models.PositiveSmallIntegerField(
+                        max_length=5, verbose_name="Waga:"
+                    ),
+                ),
+                (
+                    "client",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="lswastes",
+                        to="base.client",
+                    ),
+                ),
+                (
+                    "user",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.PROTECT,
+                        related_name="lswastes",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='HWaste',
+            name="HWaste",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('type', models.CharField(choices=[('Farby', 'Farby'), ('Oleje', 'Oleje'), ('Leki', 'Leki'), ('Baterie', 'Baterie'), ('Żarówki', 'Żarówki'), ('Tonery', 'Tonery'), ('Inne', 'Inne')], max_length=10, verbose_name='Odpad')),
-                ('trash_amount', models.PositiveSmallIntegerField(max_length=5, verbose_name='Ilość(l/kg/szt)')),
-                ('client', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='hwastes', to='base.client')),
-                ('user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.PROTECT, related_name='hwastes', to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "type",
+                    models.CharField(
+                        choices=[
+                            ("Farby", "Farby"),
+                            ("Oleje", "Oleje"),
+                            ("Leki", "Leki"),
+                            ("Baterie", "Baterie"),
+                            ("Żarówki", "Żarówki"),
+                            ("Tonery", "Tonery"),
+                            ("Inne", "Inne"),
+                        ],
+                        max_length=10,
+                        verbose_name="Odpad",
+                    ),
+                ),
+                (
+                    "trash_amount",
+                    models.PositiveSmallIntegerField(
+                        max_length=5, verbose_name="Ilość(l/kg/szt)"
+                    ),
+                ),
+                (
+                    "client",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="hwastes",
+                        to="base.client",
+                    ),
+                ),
+                (
+                    "user",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.PROTECT,
+                        related_name="hwastes",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='EWaste',
+            name="EWaste",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('type', models.CharField(choices=[('Zmywarka', 'Zmywarka'), ('TV', 'TV'), ('Laptop', 'Laptop'), ('Pralka', 'Pralka'), ('Lodówka', 'Lodówka'), ('Monitor', 'Monitor'), ('Mikrofalówka', 'Mikrofalówka'), ('Odkurzacz', 'Odkurzacz'), ('Kuchenka', 'Kuchenka'), ('Piekarnik', 'Piekarnik'), ('Inne', 'Inne')], max_length=20, verbose_name='Wybierz rodzaj odpadów:')),
-                ('height', models.PositiveSmallIntegerField(max_length=5, verbose_name='Wysokość:')),
-                ('width', models.PositiveSmallIntegerField(max_length=5, verbose_name='Szerokość:')),
-                ('length', models.PositiveSmallIntegerField(max_length=5, verbose_name='Długość:')),
-                ('weight', models.PositiveSmallIntegerField(max_length=5, verbose_name='Waga:')),
-                ('client', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='ewastes', to='base.client')),
-                ('user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.PROTECT, related_name='ewastes', to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "type",
+                    models.CharField(
+                        choices=[
+                            ("Zmywarka", "Zmywarka"),
+                            ("TV", "TV"),
+                            ("Laptop", "Laptop"),
+                            ("Pralka", "Pralka"),
+                            ("Lodówka", "Lodówka"),
+                            ("Monitor", "Monitor"),
+                            ("Mikrofalówka", "Mikrofalówka"),
+                            ("Odkurzacz", "Odkurzacz"),
+                            ("Kuchenka", "Kuchenka"),
+                            ("Piekarnik", "Piekarnik"),
+                            ("Inne", "Inne"),
+                        ],
+                        max_length=20,
+                        verbose_name="Wybierz rodzaj odpadów:",
+                    ),
+                ),
+                (
+                    "height",
+                    models.PositiveSmallIntegerField(
+                        max_length=5, verbose_name="Wysokość:"
+                    ),
+                ),
+                (
+                    "width",
+                    models.PositiveSmallIntegerField(
+                        max_length=5, verbose_name="Szerokość:"
+                    ),
+                ),
+                (
+                    "length",
+                    models.PositiveSmallIntegerField(
+                        max_length=5, verbose_name="Długość:"
+                    ),
+                ),
+                (
+                    "weight",
+                    models.PositiveSmallIntegerField(
+                        max_length=5, verbose_name="Waga:"
+                    ),
+                ),
+                (
+                    "client",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="ewastes",
+                        to="base.client",
+                    ),
+                ),
+                (
+                    "user",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.PROTECT,
+                        related_name="ewastes",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
         ),
     ]

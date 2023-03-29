@@ -6,7 +6,9 @@ from base.models import Client, Address, Recycler, Order
 
 
 class ClientForm(ModelForm):
-    user = forms.ModelChoiceField(widget=forms.HiddenInput(), required=False, queryset=None)
+    user = forms.ModelChoiceField(
+        widget=forms.HiddenInput(), required=False, queryset=None
+    )
 
     class Meta:
         model = Client
@@ -14,7 +16,9 @@ class ClientForm(ModelForm):
 
 
 class AddressForm(ModelForm):
-    user = forms.ModelChoiceField(widget=forms.HiddenInput(), required=False, queryset=None)
+    user = forms.ModelChoiceField(
+        widget=forms.HiddenInput(), required=False, queryset=None
+    )
 
     class Meta:
         model = Address
@@ -22,7 +26,9 @@ class AddressForm(ModelForm):
 
 
 class RecyclerForm(forms.ModelForm):
-    user = forms.ModelChoiceField(widget=forms.HiddenInput(), required=False, queryset=None)
+    user = forms.ModelChoiceField(
+        widget=forms.HiddenInput(), required=False, queryset=None
+    )
 
     class Meta:
         model = Recycler
@@ -30,9 +36,22 @@ class RecyclerForm(forms.ModelForm):
 
 
 class OrderForm(forms.ModelForm):
-    client = forms.ModelChoiceField(widget=forms.HiddenInput(), required=False, queryset=None)
-    address = forms.ModelChoiceField(widget=forms.HiddenInput(), required=False, queryset=None)
+    client = forms.ModelChoiceField(
+        widget=forms.HiddenInput(), required=False, queryset=None
+    )
+    address = forms.ModelChoiceField(
+        widget=forms.HiddenInput(), required=False, queryset=None
+    )
 
     class Meta:
         model = Order
-        fields = ['id', 'recycler', 'order_day', 'order_time', 'strefa', 'address', 'trash_type', 'client']
+        fields = [
+            "id",
+            "recycler",
+            "order_day",
+            "order_time",
+            "strefa",
+            "address",
+            "trash_type",
+            "client",
+        ]

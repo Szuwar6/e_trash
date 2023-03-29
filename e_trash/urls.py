@@ -19,12 +19,14 @@ from django.urls import path, include
 from e_trash.views import HomepageView, HomepageClientView, HomepageRecyclerView
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('trash/', include('trash.urls')),
-    path('base/', include('base.urls')),
-    path('', HomepageView.as_view(), name='homepage'),
-    path('homepage-client/', HomepageClientView.as_view(), name='homepage-client'),
-    path('homepage-recycler/', HomepageRecyclerView.as_view(), name='homepage-recycler'),
-    path('accounts/', include('django.contrib.auth.urls')),
-    path('accounts/', include('accounts.urls')),
+    path("admin/", admin.site.urls),
+    path("trash/", include("trash.urls")),
+    path("base/", include("base.urls")),
+    path("", HomepageView.as_view(), name="homepage"),
+    path("homepage-client/", HomepageClientView.as_view(), name="homepage-client"),
+    path(
+        "homepage-recycler/", HomepageRecyclerView.as_view(), name="homepage-recycler"
+    ),
+    path("accounts/", include("django.contrib.auth.urls")),
+    path("accounts/", include("accounts.urls")),
 ]

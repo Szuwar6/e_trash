@@ -7,28 +7,55 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('base', '0002_alter_address_postal_code'),
+        ("base", "0002_alter_address_postal_code"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='client',
-            name='email',
-            field=models.EmailField(max_length=254, verbose_name='Adres email'),
+            model_name="client",
+            name="email",
+            field=models.EmailField(max_length=254, verbose_name="Adres email"),
         ),
         migrations.AlterField(
-            model_name='client',
-            name='phone',
-            field=models.IntegerField(max_length=9, validators=[django.core.validators.RegexValidator(message="Numer telefonu musi być w formacie 'xxx-xxx-xxx'", regex='^\\d{3}-\\d{3}-\\d{3}$')], verbose_name='Telefon'),
+            model_name="client",
+            name="phone",
+            field=models.IntegerField(
+                max_length=9,
+                validators=[
+                    django.core.validators.RegexValidator(
+                        message="Numer telefonu musi być w formacie 'xxx-xxx-xxx'",
+                        regex="^\\d{3}-\\d{3}-\\d{3}$",
+                    )
+                ],
+                verbose_name="Telefon",
+            ),
         ),
         migrations.AlterField(
-            model_name='recycler',
-            name='nip',
-            field=models.IntegerField(max_length=10, validators=[django.core.validators.RegexValidator(message="NIP musi być w formacie 'xxx-xxx-xx-xx'", regex='^\\d{3}-\\d{3}-\\d{2}-\\d{2}$')], verbose_name='NIP'),
+            model_name="recycler",
+            name="nip",
+            field=models.IntegerField(
+                max_length=10,
+                validators=[
+                    django.core.validators.RegexValidator(
+                        message="NIP musi być w formacie 'xxx-xxx-xx-xx'",
+                        regex="^\\d{3}-\\d{3}-\\d{2}-\\d{2}$",
+                    )
+                ],
+                verbose_name="NIP",
+            ),
         ),
         migrations.AlterField(
-            model_name='recycler',
-            name='postal_code',
-            field=models.CharField(max_length=6, validators=[django.core.validators.RegexValidator(message="Kod pocztowy musi być w formacie 'xx-xxx'", regex='^\\d{2}-\\d{3}$')], verbose_name='Kod pocztowy'),
+            model_name="recycler",
+            name="postal_code",
+            field=models.CharField(
+                max_length=6,
+                validators=[
+                    django.core.validators.RegexValidator(
+                        message="Kod pocztowy musi być w formacie 'xx-xxx'",
+                        regex="^\\d{2}-\\d{3}$",
+                    )
+                ],
+                verbose_name="Kod pocztowy",
+            ),
         ),
     ]
